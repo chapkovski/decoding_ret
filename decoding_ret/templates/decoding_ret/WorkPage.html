@@ -6,6 +6,15 @@
 {% endblock %}
 
 {% block content %}
+    <div class="card">
+        <div class="card-body">
+            In this task you should translate a sequence of numbers into a series of letters from
+            the English alphabet. Below you can see (1) a sequence of NUMBERS (2) a KEY indicating which LETTER
+            represents each NUMBER (3) a text box in which the letter solution should be typed. In each task a new
+            sequence of numbers will appear along with a new key of number to letter relationships.
+        </div>
+    </div>
+
     <div class="alert alert-danger " role="alert">
         <strong>Correct answer (FOR DEBUG ONLY):::</strong> <span class="correct-answer"></span>
     </div>
@@ -29,7 +38,9 @@
 
     <div class="card my-3">
         <div class="card-body">
-            Task to solve: <span class="question">{{ question }}</span>
+            Task to solve:
+            <p class="lead text-center"><span class="question">{{ question }}</span>
+            </p>
         </div>
     </div>
     <div class="row">
