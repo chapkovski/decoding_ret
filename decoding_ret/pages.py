@@ -6,7 +6,7 @@ import json
 
 class WorkPage(Page):
     timer_text = 'Time left to complete the task:'
-    timeout_seconds = 3000
+    timeout_seconds = 60
 
     def vars_for_template(self):
         unanswered_tasks = self.player.tasks.filter(answer__isnull=True)
