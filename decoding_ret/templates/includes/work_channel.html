@@ -1,0 +1,49 @@
+<script>
+    $(function () {
+        var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        var ws_path = ws_scheme + '://' + window.location.host + "/tasktracker/{{ player.id }}";
+        var socket = new ReconnectingWebSocket(ws_path);
+        var $dectable = $('table#decoding-table');
+        var $inp = $('input#answer');
+        socket.onmessage = function (event) {
+            var obj = jQuery.parseJSON(event.data);
+            console.log(obj);
+            $dectable.empty();
+            $.each(obj.task.body.digits, function (i, dig) {
+                var letr = obj.task.body.letters[i];
+                var tr = $('<tr>');
+                $('<td>').html(dig).appendTo(tr);
+                $('<td>').html(letr).appendTo(tr);
+
+                $dectable.append(tr);
+            });
+
+
+            $('span.num_correct').html(obj.num_correct);
+            $('span.num_incorrect').html(obj.num_incorrect);
+            $('span.correct-answer').html(obj.task.correct_answer);
+        };
+        $("button.answer").on("click", function () {
+
+
+            var msg = $inp.val();
+
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify(msg));
+            }
+            ;
+            $inp.val('');
+
+        });
+
+        $("input#answer").keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                $("button.answer").click();
+                return false;
+            }
+        });
+    })
+    ;
+</script>
+
