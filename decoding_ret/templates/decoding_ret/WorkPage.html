@@ -9,38 +9,76 @@
     <div class="alert alert-danger " role="alert">
         <strong>Correct answer (FOR DEBUG ONLY):::</strong> <span class="correct-answer"></span>
     </div>
-    <table class="table table-sm" id="decoding-table">
+    <table class="table table-sm " id="decoding-table">
+        <thead>
+        <tr class="table-success">
+            <th>Letter:</th>
+            <th>Key:</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for i,j  in task %}
             <tr>
-                <td>{{ i }}</td>
+
                 <td>{{ j }}</td>
+                <td>{{ i }}</td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 
     <div class="card my-3">
-    <div class="card-body">
-        Task to solve: <span class="question">{{ question }}</span>
-    </div>
+        <div class="card-body">
+            Task to solve: <span class="question">{{ question }}</span>
+        </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <div class="form-row align-items-center">
-                <div class="input-group mb-3">
-                    <input type="text" id="answer" class="form-control" required name="answer"
 
-                    >
-                    <div class="input-group-append">
-                        <button class="answer btn btn-success" type="button">Answer</button>
-                    </div>
+            <div class="input-group mb-3">
+                <input type="text" id="answer" class="form-control" required name="answer"
+
+                >
+                <div class="input-group-append">
+                    <button class="answer btn btn-success" type="button">Answer</button>
                 </div>
             </div>
+
             <div>Number of correct tasks: <span class="num_correct">{{ player.num_correct }}</span></div>
             <div>Number of incorrect tasks: <span class="num_incorrect">{{ player.num_incorrect }}</span></div>
         </div>
     </div>
 {% endblock %}
 {% block scripts %}
+    <script src="{% static "decoding_ret/js/jquery.validate.js" %}"></script>
+    <script src="{% static "decoding_ret/js/jquery-validate.bootstrap-tooltip.js" %}"></script>
+    <script>
+        $(document).ready(function () {
+            $("form").validate({
+                rules: {
+                    answer: {
+                        required: true,
+
+                        minlength: {{Constants.task_len}},
+                        maxlength: {{Constants.task_len}},
+                    }
+                },
+
+                tooltip_options: {
+                    answer: {
+                        placement: 'bottom',
+                        html: true
+                    }
+                },
+                onsubmit: false,
+                onfocusout: false,
+                onkeyup: false,
+            });
+        });
+
+    </script>
+
+
     {% include 'includes/work_channel.html' %}
 {% endblock %}
 

@@ -5,7 +5,7 @@ from otree.api import (
 from django.db import models as djmodels
 import random
 from django.db.models.signals import post_save
-from django.db.models import Sum
+from .fields import ListField
 import string
 import json
 
@@ -42,22 +42,23 @@ class Player(BasePlayer):
 
 class Task(djmodels.Model):
     player = djmodels.ForeignKey(to=Player, related_name='tasks')
-    question = models.StringField()
-    correct_answer = models.StringField()
-    digits = models.StringField()
-    letters = models.StringField()
+    question = ListField()
+    correct_answer = ListField()
+    digits = ListField()
+    letters = ListField()
     answer = models.StringField(null=True)
+    is_correct = models.BooleanField()
 
     def get_body(self):
         return {
-            'question': json.loads(self.question),
-            'digits': json.loads(self.digits),
-            'letters': json.loads(self.letters),
+            'question': self.question,
+            'digits': self.digits,
+            'letters': self.letters,
         }
 
     def decoding_dict(self):
-        keys = json.loads(self.digits)
-        values = json.loads(self.letters)
+        keys = self.digits
+        values = self.letters
         dictionary = dict(zip(keys, values))
         return dictionary
 
@@ -67,7 +68,7 @@ class Task(djmodels.Model):
 
     def as_dict(self):
         return {
-            'correct_answer': json.loads(self.correct_answer),
+            'correct_answer': self.correct_answer,
             'body': self.get_body()
         }
 
@@ -77,11 +78,11 @@ class Task(djmodels.Model):
             return
         digs = list(string.digits)
         random.shuffle(digs)
-        instance.digits = json.dumps(digs)
+        instance.digits = digs
         lts = random.sample(string.ascii_lowercase, k=Constants.num_letters)
-        instance.letters = json.dumps(lts)
-        instance.question = json.dumps(random.choices(string.digits, k=Constants.task_len))
-        instance.correct_answer = json.dumps(instance.get_decoded(json.loads(instance.question)))
+        instance.letters = lts
+        instance.question = random.choices(string.digits, k=Constants.task_len)
+        instance.correct_answer = instance.get_decoded(instance.question)
         instance.save()
 
 

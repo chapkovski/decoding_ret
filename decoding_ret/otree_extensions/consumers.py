@@ -37,7 +37,7 @@ class TaskTracker(JsonWebsocketConsumer):
         oldtask.answer = text
         oldtask.save()
         player.num_answered += 1
-        if text == ''.join(json.loads(oldtask.correct_answer)):
+        if text == ''.join(oldtask.correct_answer):
             player.num_correct += 1
         else:
             player.num_incorrect += 1

@@ -14,10 +14,10 @@ class WorkPage(Page):
             task = unanswered_tasks.first()
         else:
             task = self.player.tasks.create()
-        t = zip(json.loads(task.digits), json.loads(task.letters))
+        t = zip(task.digits, task.letters)
         return {'num_digits': range(Constants.num_digits),
                 'task': t,
-                'question': ''.join(json.loads(task.question)) }
+                'question': ''.join(task.question) }
 
     def before_next_page(self):
         self.player.dump_tasks = json.dumps(list(self.player.tasks.all().values()))
