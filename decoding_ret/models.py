@@ -47,6 +47,7 @@ class Task(djmodels.Model):
     digits = ListField()
     letters = ListField()
     answer = models.StringField(null=True)
+    # TODO: implement boolean
     is_correct = models.BooleanField()
 
     def get_body(self):
@@ -67,6 +68,7 @@ class Task(djmodels.Model):
         return [decdict[i] for i in to_decode]
 
     def as_dict(self):
+        # TODO: clean the mess with the body
         return {
             'correct_answer': self.correct_answer,
             'body': self.get_body()
