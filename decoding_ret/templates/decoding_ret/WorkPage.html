@@ -10,14 +10,19 @@
         <strong>Correct answer (FOR DEBUG ONLY):::</strong> <span class="correct-answer"></span>
     </div>
     <table class="table table-sm" id="decoding-table">
-        {% for i in num_digits %}
+        {% for i,j  in task %}
             <tr>
-                <td></td>
-                <td></td>
+                <td>{{ i }}</td>
+                <td>{{ j }}</td>
             </tr>
         {% endfor %}
     </table>
 
+    <div class="card my-3">
+    <div class="card-body">
+        Task to solve: <span class="question">{{ question }}</span>
+    </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="form-row align-items-center">

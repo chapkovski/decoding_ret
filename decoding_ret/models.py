@@ -67,7 +67,7 @@ class Task(djmodels.Model):
 
     def as_dict(self):
         return {
-            'correct_answer': self.correct_answer,
+            'correct_answer': json.loads(self.correct_answer),
             'body': self.get_body()
         }
 
